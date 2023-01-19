@@ -16,33 +16,32 @@ Output: ["()"]
 func generateParenthesis(n int) []string {
 	type variant struct {
 		text      string
-		len       int
 		openCount int
 	}
-	resultVariantLen := n * 2
-	buckets := map[int][]variant{1: {variant{"(", 1, 1}}}
-	var results []string
+	layer1 := []variant{{"(", 1}}
+	layer2 := []variant{}
+	results := []string{}
 	var closeCount int
-	for size := 2; size < resultVariantLen; size++ {
-		buckets[size] = []variant{}
-		for _, v := range buckets[size-1] {
-			closeCount = size - 1 - v.openCount
-			if v.openCount < n {
-				buckets[size] = append(
-					buckets[size],
-					variant{v.text + "(", size, v.openCount + 1},
+	for viriantLen := 2; viriantLen < n*2; viriantLen++ {
+		layer2 = []variant{}
+		for _, l1v := range layer1 {
+			closeCount = viriantLen - 1 - l1v.openCount
+			if l1v.openCount < n {
+				layer2 = append(
+					layer2,
+					variant{l1v.text + "(", l1v.openCount + 1},
 				)
 			}
-
-			if closeCount < v.openCount {
-				buckets[size] = append(
-					buckets[size],
-					variant{v.text + ")", size, v.openCount},
+			if closeCount < l1v.openCount {
+				layer2 = append(
+					layer2,
+					variant{l1v.text + ")", l1v.openCount},
 				)
 			}
 		}
+		layer1 = layer2
 	}
-	for _, variant := range buckets[resultVariantLen-1] {
+	for _, variant := range layer1 {
 		results = append(results, variant.text+")")
 	}
 	return results
