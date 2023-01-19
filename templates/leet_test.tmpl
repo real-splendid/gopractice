@@ -1,0 +1,17 @@
+package leetcode
+
+import (
+	"testing"
+	"reflect"
+)
+
+func Test##name##(t *testing.T) {
+	check := func(want, got []int) {
+		if !reflect.DeepEqual(want, got) {
+			t.Errorf("\nwant %v \ngot  %v", want, got)
+		}
+	}
+
+	check(
+	)
+}
